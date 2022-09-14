@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">CourseWork_2022_2nd</string>
+    <string-array name="TripName">
+        <item>
+            Conference
+        </item>
+        <item>
+            Meeting
+        </item>
+        <item>
+            Signing
+        </item>
+        <item>
+            Scouting
+        </item>
+    </string-array>
+</resources>
