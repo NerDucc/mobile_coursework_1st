@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CourseWork_2022_2nd</string>
+    <string name="app_name">M-Expense</string>
     <string-array name="TripName">
         <item>
             Conference
@@ -11,7 +11,23 @@
             Signing
         </item>
         <item>
-            Scouting
+            Negotiation
         </item>
     </string-array>
+    <string-array name="ExpenseName">
+        <item>
+            Food
+        </item>
+        <item>
+            Travel
+        </item>
+        <item>
+            Stay
+        </item>
+        <item>
+            Other
+        </item>
+    </string-array>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
 </resources>

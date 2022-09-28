@@ -9,10 +9,32 @@
         android:id="@+id/mainFragment"
         android:name="com.example.coursework_2022_2nd.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_editorFragment"
+            app:destination="@id/editorFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editorFragment"
         android:name="com.example.coursework_2022_2nd.EditorFragment"
         android:label="fragment_editor"
-        tools:layout="@layout/fragment_editor" />
+        tools:layout="@layout/fragment_editor" >
+        <action
+            android:id="@+id/action_editorFragment_to_expenseFragment"
+            app:destination="@id/expenseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expenseFragment"
+        android:name="com.example.coursework_2022_2nd.ExpenseFragment"
+        android:label="fragment_expense"
+        tools:layout="@layout/fragment_expense" >
+        <action
+            android:id="@+id/action_expenseFragment_to_expenseEditorFragment"
+            app:destination="@id/expenseEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expenseEditorFragment"
+        android:name="com.example.coursework_2022_2nd.ExpenseEditorFragment"
+        android:label="fragment_expense_editor"
+        tools:layout="@layout/fragment_expense_editor" />
 </navigation>

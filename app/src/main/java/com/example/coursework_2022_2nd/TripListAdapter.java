@@ -3,6 +3,8 @@ package com.example.coursework_2022_2nd;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,10 +14,10 @@ import com.example.coursework_2022_2nd.databinding.ListTripBinding;
 
 import java.util.List;
 
-public class TripListAdapter  extends RecyclerView.Adapter<TripListAdapter.TripViewHolder>  {
+public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripViewHolder>  {
 
     public interface ListTripListener{
-        void onItemClick(String tripId);
+        void onItemClick(TripEntity tripId);
     }
 
     private List<TripEntity> tripList;
@@ -54,12 +56,14 @@ public class TripListAdapter  extends RecyclerView.Adapter<TripListAdapter.TripV
         }
 
         public void bindData(TripEntity tData){
-            itemViewBinding.tripName.setText(tData.getId());
+            itemViewBinding.tripName.setText(tData.getName());
             itemViewBinding.getRoot().setOnClickListener(
                     v -> {
-                        listener.onItemClick(tData.getId());
+                        listener.onItemClick(tData);
                     }
             );
         }
     }
+
+
 }

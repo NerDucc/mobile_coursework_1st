@@ -1,5 +1,8 @@
 package com.example.coursework_2022_2nd;
 
+import androidx.annotation.ContentView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -7,14 +10,20 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,8 +32,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.coursework_2022_2nd.data.TripDAO;
+import com.example.coursework_2022_2nd.data.TripEntity;
 import com.example.coursework_2022_2nd.databinding.FragmentEditorBinding;
 
 import java.text.SimpleDateFormat;
@@ -35,70 +48,206 @@ import java.util.Locale;
 public class EditorFragment extends Fragment {
 
     private FragmentEditorBinding binding;
-    private EditorViewModel mViewModel;
     private RadioGroup radioGroup;
     private RadioButton radioButtonY;
     private RadioButton radioButtonN;
-    private TextView textView;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
+    private Button button;
+    TripDAO dao;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Drop Down
+        String[] tripName = getResources().getStringArray(R.array.TripName);
+        binding.autoCompleteTextView.setAdapter(new ArrayAdapter<>(requireContext(),R.layout.dropdown_tripname, tripName));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mViewModel = new ViewModelProvider(this).get(EditorViewModel.class);
+        AppCompatActivity app = (AppCompatActivity)getActivity();
+        ActionBar ab = app.getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_outline_save_24);
+        setHasOptionsMenu(true);
+
         binding = FragmentEditorBinding.inflate(inflater, container, false);
+
+
+        //Calling the DAO
+        dao = new TripDAO(getContext());
+
+        //Call the DAO and get the trip by ID sent from MainFragment and it returns the trip
+//        dao.getByID(getArguments().getString("trip_id"));
+
+        String idReceived = getArguments().getString("trip_id");
+        Bundle bundleReceived = getArguments();
+        System.out.println("Here is the id" + idReceived);
+        if(idReceived != Constants.New_Trip_ID){
+            dao.trip.setValue(dao.getByID(idReceived));
+        }
+        //Observing the changes and set text for the editor view
+        dao.trip.observe(
+                getViewLifecycleOwner(),
+                trip ->{
+                    binding.autoCompleteTextView.setText(getArguments().getString("name"));
+                    binding.riskSelected.setText(getArguments().getString("risk"));
+                    binding.editDestination.setText(getArguments().getString("destination"));
+                    binding.editDescription.setText(getArguments().getString("description"));
+                    binding.editDate.setText(getArguments().getString("date_trip"));
+                    binding.editParticipant.setText(Integer.toString(getArguments().getInt("participant")));
+                    binding.editTransportation.setText(getArguments().getString("transportation"));
+
+                    requireActivity().invalidateOptionsMenu();
+                }
+        );
 
         //CheckButton
         radioGroup = binding.radioGroup;
         binding.riskSelected.setInputType(InputType.TYPE_NULL);
+
         radioButtonY = binding.radioYes;
-        radioButtonY.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioYesButtonClicked(v);
-            }
-        });
+            radioButtonY.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRadioButtonClicked(v);
+                }
+            });
         radioButtonN = binding.radioNo;
-        radioButtonN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRadioNoButtonClicked(v);
-            }
-        });
+            radioButtonN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRadioButtonClicked(v);
+                }
+            });
 
-
-
-        //Drop Down
-        Resources res = getResources();
-        String[] tripName = res.getStringArray(R.array.TripName);
-        ArrayAdapter<String> TripNameArrayAdapter = new ArrayAdapter<>(requireContext(),R.layout.dropdown_tripname , tripName);
-        binding.autoCompleteTextView.setAdapter(TripNameArrayAdapter);
 
         //DatePicker
         editTextDate = binding.editDate;
         editTextDate.setInputType(InputType.TYPE_NULL);
         editTextDate.setText(getTodayDate());
-        editTextDate.setOnClickListener(new View.OnClickListener() {
+            editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initDatePicker();
                 showDateDialog(editTextDate);
-            }
-        });
+                }
+            });
 
-
-        String tripID = getArguments().getString("TripID");
-        binding.editDescription.setText(tripID);
+            binding.changeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(getView()).navigate(R.id.expenseFragment, bundleReceived);
+                }
+            });
 
         return binding.getRoot();
     }
 
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if (this.validate()) return saveAndReturn() ;
+                else return false;
+            case R.id.action_delete:
+                return deleteAndReturn();
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private boolean validate() {
+        EditText name = binding.autoCompleteTextView;
+        EditText date = binding.editDate;
+        EditText destination = binding.editDestination;
+        EditText risk= binding.riskSelected;
+        EditText participant = binding.editParticipant;
+
+        boolean isValidated = true;
+
+        if (name.getText().toString().equals(Constants.Empty_String)){
+            name.setError("Name of the trip is required");
+            isValidated = false;
+        }
+        if (date.getText().toString().equals(Constants.Empty_String)){
+            date.setError("Date of the trip is required");
+            isValidated = false;
+        }
+        String participantText = participant.getText().toString();
+        if (participantText.equals(Constants.Empty_String) || Integer.parseInt(participantText) <= 0){
+            participant.setError("Please fill in the number of people on this trip or we will assume that there is only one person on this trip");
+            participant.setText("1");
+            isValidated = false;
+        }
+
+        if (risk.getText().toString().equals(Constants.Empty_String)){
+            risk.setError("Please fill in the risk assessment or we will assume that you do not need any risk assessment");
+            binding.riskSelected.setText("No risk assessment required");
+            isValidated = false;
+        }
+        if (destination.getText().toString().equals(Constants.Empty_String)){
+            destination.setError("Please fill in the destination of this trip");
+            isValidated = false;
+        }
+        return isValidated;
+    }
+
+    //Delete
+    private boolean deleteAndReturn() {
+        Log.i(this.getClass().getName(), "Delete and return");
+        dao.delete(dao.trip.getValue().getId());
+        Navigation.findNavController(getView()).navigateUp();
+        return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+
+        if(getArguments().getString("trip_id") != Constants.New_Trip_ID){
+            inflater.inflate(R.menu.trip_delete, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private boolean saveAndReturn() {
+        Log.i(this.getClass().getName(), "Saved and return");
+
+        TripEntity trip = new TripEntity();
+
+        trip.setName(binding.autoCompleteTextView.getText().toString());
+        trip.setTransportation(binding.editTransportation.getText().toString());
+        trip.setRisk(binding.riskSelected.getText().toString());
+        trip.setDate(binding.editDate.getText().toString());
+        trip.setParticipant(Integer.parseInt(binding.editParticipant.getText().toString()));
+        trip.setDestination(binding.editDestination.getText().toString());
+        trip.setDescription(binding.editDescription.getText().toString());
+
+        if (getArguments().getString("trip_id") != "0"){
+            trip.setId(getArguments().getString("trip_id"));
+            dao.update(trip);
+        }
+        else {
+            dao.insert(trip);
+        }
+        Navigation.findNavController(getView()).navigateUp();
+        return true;
+    }
+
     //Handling Radio Button Clicked
-    public void onRadioYesButtonClicked(View view) {
+    public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
         // Check which radio button was clicked
@@ -107,15 +256,6 @@ public class EditorFragment extends Fragment {
                 if (checked)
                     binding.riskSelected.setText("Risk assessment required");
                     break;
-        }
-    }
-
-    //Handling Radio Button Clicked
-    public void onRadioNoButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
             case R.id.radio_no:
                 if (checked)
                     binding.riskSelected.setText("No risk assessment required");
@@ -133,6 +273,7 @@ public class EditorFragment extends Fragment {
         return makeDateString(day, month, year);
     }
 
+    //Initiate the date picker
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -141,7 +282,6 @@ public class EditorFragment extends Fragment {
                 String date = makeDateString(dayOfMonth, month, year);
                 binding.editDate.setText(date);
             }
-
         };
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -152,10 +292,12 @@ public class EditorFragment extends Fragment {
         datePickerDialog = new DatePickerDialog(requireContext(), style, dateSetListener, year, month, day);
     }
 
+    //Convert Date to String
     private String makeDateString(int dayOfMonth, int month, int year) {
         return getMonthFormat(month) + " " +  dayOfMonth + "," + year;
     }
 
+    //Convert Month to String
     private String getMonthFormat(int month) {
         if(month == 1)
             return "January";
@@ -181,12 +323,12 @@ public class EditorFragment extends Fragment {
             return "November";
         if(month == 12)
             return "December";
-
         //default should never happen
         return "January";
 
     }
 
+    //Showing the date picker to the edittext
     private void showDateDialog(EditText editTextDate) {
         datePickerDialog.show();
     }

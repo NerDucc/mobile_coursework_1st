@@ -1,9 +1,14 @@
 package com.example.coursework_2022_2nd.data;
 
+import android.content.Context;
+
 import com.example.coursework_2022_2nd.Constants;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class TripEntity {
     private String id;
@@ -14,28 +19,27 @@ public class TripEntity {
     private String description;
     private String risk;
     private String transportation;
-    private String detail;
+
 
     public TripEntity() {
         this(
                 Constants.New_Trip_ID,
                 Constants.Empty_String,
                 Constants.Empty_String,
-                Calendar.getInstance().getTime().toString(),
-                0,
                 Constants.Empty_String,
+                0,
                 Constants.Empty_String,
                 Constants.Empty_String,
                 Constants.Empty_String
         );
     }
     public TripEntity(String name, String destination, String date, int participant, String description,
-                      String risk, String transportation, String detail) {
-        this(Constants.New_Trip_ID, name, destination, date, participant, description, risk, transportation, detail);
+                      String risk, String transportation) {
+        this(Constants.New_Trip_ID, name, destination, date, participant, description, risk, transportation);
     }
 
     public TripEntity(String id, String name, String destination, String date, int participant, String description,
-                      String risk, String transportation, String detail) {
+                      String risk, String transportation) {
         setId(id);
         setName(name);
         setDestination(destination);
@@ -44,7 +48,6 @@ public class TripEntity {
         setDescription(description);
         setRisk(risk);
         setTransportation(transportation);
-        setDetail(detail);
     }
 
     @Override
@@ -58,7 +61,7 @@ public class TripEntity {
                 ", description ='" +description+'\'' +
                 ", risk ='" +risk+'\'' +
                 ", transportation ='" +transportation+'\'' +
-                ", detail ='" +detail+'\'' +
+                 +
                 '}';
     }
     public void setId(String id) {
@@ -77,9 +80,7 @@ public class TripEntity {
         this.destination = destination;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -97,6 +98,8 @@ public class TripEntity {
         this.transportation = transportation;
     }
 
+
+
     public int getParticipant() {
         return participant;
     }
@@ -109,9 +112,7 @@ public class TripEntity {
         return destination;
     }
 
-    public String getDetail() {
-        return detail;
-    }
+
 
     public String getName() {
         return name;
@@ -134,4 +135,18 @@ public class TripEntity {
     }
 
 
+
+
+
+    public Map<String, Object> getMapWithoutId(){
+        Map<String, Object> bMap = new HashMap<>();
+        bMap.put("name", this.name);
+        bMap.put("description", this.description);
+        bMap.put("destination", this.destination);
+        bMap.put("risk", this.risk);
+        bMap.put("date", this.date);
+        bMap.put("participant", this.participant);
+        bMap.put("transportation", this.transportation);
+        return bMap;
+    }
 }
