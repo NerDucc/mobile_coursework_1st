@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -48,7 +49,6 @@ import java.util.Locale;
 public class EditorFragment extends Fragment {
 
     private FragmentEditorBinding binding;
-    private RadioGroup radioGroup;
     private RadioButton radioButtonY;
     private RadioButton radioButtonN;
     private DatePickerDialog datePickerDialog;
@@ -106,7 +106,6 @@ public class EditorFragment extends Fragment {
         );
 
         //CheckButton
-        radioGroup = binding.radioGroup;
         binding.riskSelected.setInputType(InputType.TYPE_NULL);
 
         radioButtonY = binding.radioYes;
@@ -137,13 +136,6 @@ public class EditorFragment extends Fragment {
                 }
             });
 
-            binding.changeView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Navigation.findNavController(getView()).navigate(R.id.expenseFragment, bundleReceived);
-                }
-            });
-
         return binding.getRoot();
     }
 
@@ -161,8 +153,16 @@ public class EditorFragment extends Fragment {
                 else return false;
             case R.id.action_delete:
                 return deleteAndReturn();
+            case R.id.expenseDetail:
+                return toExpense();
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean toExpense() {
+        Bundle bundleReceived = getArguments();
+        Navigation.findNavController(getView()).navigate(R.id.expenseFragment, bundleReceived);
+        return true;
     }
 
 
@@ -205,8 +205,21 @@ public class EditorFragment extends Fragment {
     //Delete
     private boolean deleteAndReturn() {
         Log.i(this.getClass().getName(), "Delete and return");
-        dao.delete(dao.trip.getValue().getId());
-        Navigation.findNavController(getView()).navigateUp();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete this trip");
+        builder.setMessage("This trip will be permanently deleted ");
+        builder.show();
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dao.delete(dao.trip.getValue().getId());
+                dialog.dismiss();
+                Navigation.findNavController(getView()).navigateUp();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
         return true;
     }
 
@@ -234,13 +247,52 @@ public class EditorFragment extends Fragment {
         trip.setDescription(binding.editDescription.getText().toString());
 
         if (getArguments().getString("trip_id") != "0"){
-            trip.setId(getArguments().getString("trip_id"));
-            dao.update(trip);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Information of this trip:");
+            builder.setMessage(binding.autoCompleteTextView.getText().toString() + "\n" +
+                    binding.editTransportation.getText().toString() + "\n" +
+                    binding.riskSelected.getText().toString() + "\n" +
+                    binding.editDate.getText().toString() + "\n" +
+                    binding.editParticipant.getText().toString() + "\n" +
+                    binding.editDestination.getText().toString() + "\n" +
+                    binding.editDescription.getText().toString() + "\n" );
+            builder.show();
+            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    trip.setId(getArguments().getString("trip_id"));
+                    dao.update(trip);
+                    dialog.dismiss();
+                    Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         else {
-            dao.insert(trip);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Information of the new trip:");
+            builder.setMessage(binding.autoCompleteTextView.getText().toString() + "\n" +
+                    binding.editTransportation.getText().toString() + "\n" +
+                    binding.riskSelected.getText().toString() + "\n" +
+                    binding.editDate.getText().toString() + "\n" +
+                    binding.editParticipant.getText().toString() + "\n" +
+                    binding.editDestination.getText().toString() + "\n" +
+                    binding.editDescription.getText().toString() + "\n" );
+            builder.show();
+            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    dao.insert(trip);
+                    dialog.dismiss();
+                    Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-        Navigation.findNavController(getView()).navigateUp();
         return true;
     }
 

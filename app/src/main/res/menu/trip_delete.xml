@@ -2,8 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        app:showAsAction="always"
+        android:title=""
+        android:icon="@drawable/ic_baseline_more_vert_24">
+        <menu>
+    <item
         android:id="@+id/action_delete"
         android:title="Delete"
         android:icon="@drawable/ic_baseline_delete_24"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/expenseDetail"
+        android:title="Expense info"
+        android:icon="@drawable/ic_baseline_info_24"
+        app:showAsAction="never"
+        />
+        </menu>
+    </item>
 </menu>

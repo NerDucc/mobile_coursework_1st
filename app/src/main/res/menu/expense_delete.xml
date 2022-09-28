@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_delete_expense"
         android:title="Delete"
-        android:icon="@drawable/ic_baseline_delete_24"
+        android:icon="@drawable/ic_outline_folder_delete_24"
         app:showAsAction="ifRoom"/>
 </menu>

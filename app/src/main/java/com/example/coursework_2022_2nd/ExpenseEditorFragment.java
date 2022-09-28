@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -128,8 +129,20 @@ public class ExpenseEditorFragment extends Fragment {
 
     private boolean ExpenseDeleteAndReturn() {
         Log.i(this.getClass().getName(), "Delete and return");
-        expenseDAO.delete(expenseDAO.expense.getValue().getE_ID());
-        Navigation.findNavController(getView()).navigateUp();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete expense of the trip");
+        builder.setMessage("This will be permanently deleted!!!");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                expenseDAO.delete(expenseDAO.expense.getValue().getE_ID());
+                Navigation.findNavController(getView()).navigateUp();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        builder.show();
+
         return true;
     }
 
@@ -144,13 +157,47 @@ public class ExpenseEditorFragment extends Fragment {
         expense.setNotes(binding.comment.getText().toString());
         expense.setT_ID(getArguments().getString("trip_id"));
         if (getArguments().getString("expenseID") != "0"){
-            expense.setE_ID(getArguments().getString("expenseID"));
-            expenseDAO.update(expense);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Information of the expense of the trip:");
+            builder.setMessage(binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
+                    binding.editDateExpense.getText().toString() + "\n" +
+                    binding.editAmount.getText().toString() + "\n" +
+                    binding.comment.getText().toString() + "\n");
+            builder.show();
+            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    expense.setE_ID(getArguments().getString("expenseID"));
+                    expenseDAO.update(expense);
+                    dialog.dismiss();
+                    Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         else {
-            expenseDAO.insert(expense);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Information of the expense of the trip:");
+            builder.setMessage(binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
+                    binding.editDateExpense.getText().toString() + "\n" +
+                    binding.editAmount.getText().toString() + "\n" +
+                    binding.comment.getText().toString() + "\n");
+            builder.show();
+            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    expenseDAO.insert(expense);
+                    dialog.dismiss();
+                    Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         }
-        Navigation.findNavController(getView()).navigateUp();
         return true;
     }
     @Override
