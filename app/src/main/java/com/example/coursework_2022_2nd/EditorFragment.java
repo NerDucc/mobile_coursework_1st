@@ -53,7 +53,6 @@ public class EditorFragment extends Fragment {
     private RadioButton radioButtonN;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
-    private Button button;
     TripDAO dao;
 
     @Override
@@ -82,27 +81,26 @@ public class EditorFragment extends Fragment {
         //Calling the DAO
         dao = new TripDAO(getContext());
 
-        //Call the DAO and get the trip by ID sent from MainFragment and it returns the trip
+        //Calling the DAO and get the trip by ID sent from MainFragment and it returns the trip
 //        dao.getByID(getArguments().getString("trip_id"));
 
         String idReceived = getArguments().getString("trip_id");
         Bundle bundleReceived = getArguments();
-        System.out.println("Here is the id" + idReceived);
+
         if(idReceived != Constants.New_Trip_ID){
             dao.trip.setValue(dao.getByID(idReceived));
         }
-        //Observing the changes and set text for the editor view
+        //Observing the changes and set text for the editor view from the bundle sent from main
         dao.trip.observe(
                 getViewLifecycleOwner(),
                 trip ->{
-                    binding.autoCompleteTextView.setText(getArguments().getString("name"));
-                    binding.riskSelected.setText(getArguments().getString("risk"));
-                    binding.editDestination.setText(getArguments().getString("destination"));
-                    binding.editDescription.setText(getArguments().getString("description"));
-                    binding.editDate.setText(getArguments().getString("date_trip"));
-                    binding.editParticipant.setText(Integer.toString(getArguments().getInt("participant")));
-                    binding.editTransportation.setText(getArguments().getString("transportation"));
-
+                    binding.autoCompleteTextView.setText(bundleReceived.getString("name"));
+                    binding.riskSelected.setText(bundleReceived.getString("risk"));
+                    binding.editDestination.setText(bundleReceived.getString("destination"));
+                    binding.editDescription.setText(bundleReceived.getString("description"));
+                    binding.editDate.setText(bundleReceived.getString("date_trip"));
+                    binding.editParticipant.setText(Integer.toString(bundleReceived.getInt("participant")));
+                    binding.editTransportation.setText(bundleReceived.getString("transportation"));
                     requireActivity().invalidateOptionsMenu();
                 }
         );

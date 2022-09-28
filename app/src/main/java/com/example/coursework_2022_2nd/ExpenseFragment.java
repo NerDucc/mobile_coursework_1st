@@ -64,11 +64,7 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("expenseID", Constants.New_Trip_ID);
-//                bundle.putString("expense_name",Constants.Empty_String);
-//                bundle.putInt("expense_amount", 0);
-//                bundle.putString("expense_date", Constants.Empty_String);
                 bundle.putString("trip_id", getArguments().getString("trip_id"));
-                System.out.println("Heloooooooooooooooooooo"+bundle);
 
                 Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
             }
@@ -88,6 +84,7 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         bundle.putString("expense_amount", expense.getAmount().toString());
         bundle.putString("expense_date", expense.getDate());
         bundle.putString("trip_id", expense.getT_ID());
+        bundle.putString("comment", expense.getNotes());
         Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
         System.out.println(bundle);
     }

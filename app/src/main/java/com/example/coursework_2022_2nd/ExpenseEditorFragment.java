@@ -38,7 +38,6 @@ public class ExpenseEditorFragment extends Fragment {
     private FragmentExpenseEditorBinding  binding;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
-    Button button;
     ExpenseDAO expenseDAO;
 
     @Override
@@ -67,16 +66,17 @@ public class ExpenseEditorFragment extends Fragment {
 
         expenseDAO = new ExpenseDAO(getContext(), tripId);
         String expenseIdReceived = getArguments().getString("expenseID");
+
         if(!expenseIdReceived.equals(Constants.New_Trip_ID)){
             expenseDAO.expense.setValue(expenseDAO.getByID(expenseIdReceived));
         }
         expenseDAO.expense.observe(
                 getViewLifecycleOwner(),
                 expense -> {
-                    binding.autoCompleteTextViewExpense.setText(getArguments().getString("expense_name"));
-                    binding.editDateExpense.setText(getArguments().getString("expense_date"));
-                    binding.editAmount.setText(getArguments().getString("expense_amount"));
-
+                    binding.autoCompleteTextViewExpense.setText(bundleReceived.getString("expense_name"));
+                    binding.editDateExpense.setText(bundleReceived.getString("expense_date"));
+                    binding.editAmount.setText(bundleReceived.getString("expense_amount"));
+                    binding.comment.setText(bundleReceived.getString("comment"));
                     requireActivity().invalidateOptionsMenu();
                 }
         );
@@ -141,15 +141,13 @@ public class ExpenseEditorFragment extends Fragment {
         expense.setType(binding.autoCompleteTextViewExpense.getText().toString());
         expense.setDate(binding.editDateExpense.getText().toString());
         expense.setAmount(Integer.parseInt(binding.editAmount.getText().toString()));
+        expense.setNotes(binding.comment.getText().toString());
         expense.setT_ID(getArguments().getString("trip_id"));
         if (getArguments().getString("expenseID") != "0"){
             expense.setE_ID(getArguments().getString("expenseID"));
             expenseDAO.update(expense);
-            System.out.println(expense);
-
         }
         else {
-            System.out.println(expense);
             expenseDAO.insert(expense);
         }
         Navigation.findNavController(getView()).navigateUp();

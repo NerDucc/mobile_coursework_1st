@@ -39,6 +39,7 @@ public class ExpenseDAO {
             expenseDB.setE_ID(cursor.getString(cursor.getColumnIndex("expense_id")));
             expenseDB.setType(cursor.getString(cursor.getColumnIndex("expense_name")));
             expenseDB.setDate(cursor.getString(cursor.getColumnIndex("expense_date")));
+            expenseDB.setNotes(cursor.getString(cursor.getColumnIndex("expense_comment")));
             expenseDB.setAmount(cursor.getInt(cursor.getColumnIndex("expense_amount")));
             expenseDB.setT_ID(cursor.getString(cursor.getColumnIndex("trip_id")));
 
@@ -63,6 +64,7 @@ public class ExpenseDAO {
         ContentValues contentValues = new ContentValues();
         contentValues.put("expense_name", expenseDB.getType());
         contentValues.put("expense_date", expenseDB.getDate());
+        contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
         contentValues.put("trip_id", expenseDB.getT_ID());
 
@@ -71,10 +73,10 @@ public class ExpenseDAO {
 
     public int update(ExpenseEntity expenseDB){
         ContentValues contentValues = new ContentValues();
-
         contentValues.put("expense_id", expenseDB.getE_ID());
         contentValues.put("expense_name", expenseDB.getType());
         contentValues.put("expense_date", expenseDB.getDate());
+        contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
         return db.update( "expense",contentValues, "expense_id=? and trip_id =?", new String[]{String.valueOf(expenseDB.getE_ID()), tID});
     }
