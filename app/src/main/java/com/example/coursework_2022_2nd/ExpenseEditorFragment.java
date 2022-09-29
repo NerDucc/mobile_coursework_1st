@@ -131,7 +131,7 @@ public class ExpenseEditorFragment extends Fragment {
         Log.i(this.getClass().getName(), "Delete and return");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete expense of the trip");
-        builder.setMessage("This will be permanently deleted!!!");
+        builder.setMessage("This will be permanently deleted!");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -159,12 +159,12 @@ public class ExpenseEditorFragment extends Fragment {
         if (getArguments().getString("expenseID") != "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Information of the expense of the trip:");
-            builder.setMessage(binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
-                    binding.editDateExpense.getText().toString() + "\n" +
-                    binding.editAmount.getText().toString() + "\n" +
-                    binding.comment.getText().toString() + "\n");
+            builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
+                    "Date: "+binding.editDateExpense.getText().toString() + "\n" +
+                    "Amount: " + binding.editAmount.getText().toString() + "\n" +
+                    "Comment: " + binding.comment.getText().toString() + "\n");
             builder.show();
-            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -172,6 +172,12 @@ public class ExpenseEditorFragment extends Fragment {
                     expenseDAO.update(expense);
                     dialog.dismiss();
                     Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
             });
             AlertDialog dialog = builder.create();
@@ -185,13 +191,19 @@ public class ExpenseEditorFragment extends Fragment {
                     binding.editAmount.getText().toString() + "\n" +
                     binding.comment.getText().toString() + "\n");
             builder.show();
-            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     expenseDAO.insert(expense);
                     dialog.dismiss();
                     Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
             });
             AlertDialog dialog = builder.create();

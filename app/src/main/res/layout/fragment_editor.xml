@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EditorFragment">
+
+
+    <TextView
+        android:id="@+id/select_transportation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_emoji_transportation_24"
+        android:text="Transportation:"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTransportation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editParticipant"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/select_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_description_24"
+        android:text="Description:"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/editDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTransportation"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="59dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:hint="Name of the trip"
-        app:startIconDrawable="@drawable/ic_baseline_card_travel_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_card_travel_24">
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
@@ -35,122 +64,141 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <EditText
         android:id="@+id/editDestination"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Destination"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:hint=" "
         android:inputType="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editName" />
+        app:layout_constraintTop_toBottomOf="@+id/editName"
+        app:layout_constraintVertical_bias="0.005"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/selected_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
         android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
-        android:hint="Select travel date below:"
+        android:text="Travel date:"
         android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/editDate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editDestination" />
+        app:layout_constraintTop_toBottomOf="@+id/editDestination"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/select_destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_place_24"
+        android:text="Destination:"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/editDestination"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/selected_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_people_alt_24"
+        android:text="Participants:"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/editParticipant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.101"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editDate"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
         android:focusable="false"
-        android:hint="Date "
         android:inputType="none"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/editParticipant"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selected_date" />
+        app:layout_constraintTop_toBottomOf="@+id/editDestination"
+        app:layout_constraintVertical_bias="0.477"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editParticipant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Set number of people"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
         android:inputType="number"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDate" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.47"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editTransportation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Transportation"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
         android:inputType="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editParticipant" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/editDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Description"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
         android:inputType="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTransportation" />
+        app:layout_constraintTop_toBottomOf="@+id/editTransportation"
+        app:layout_constraintVertical_bias="0.251"
+        tools:ignore="MissingConstraints" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="370dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/risk_selected"
-        >
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="19dp">
 
         <RadioButton
             android:id="@+id/radio_yes"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="match_parent"
             android:hint="Requires risk assessment"
             android:text="Required" />
 
         <RadioButton
             android:id="@+id/radio_no"
-            android:layout_width="wrap_content"
+            android:layout_width="196dp"
             android:layout_height="match_parent"
             android:text="Not Required" />
 
@@ -158,19 +206,18 @@
 
     <EditText
         android:id="@+id/risk_selected"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="353dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:hint="Requires risk assessment : "
-        android:textSize="20sp"
+        android:text="No risk assessment required"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/editDescription"
+        app:layout_constraintVertical_bias="0.31" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

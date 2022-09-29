@@ -218,15 +218,13 @@ public class EditorFragment extends Fragment {
                 Navigation.findNavController(getView()).navigateUp();
             }
         });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.create().show();
+
         return true;
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-
         if(getArguments().getString("trip_id") != Constants.New_Trip_ID){
             inflater.inflate(R.menu.trip_delete, menu);
         }
@@ -249,15 +247,15 @@ public class EditorFragment extends Fragment {
         if (getArguments().getString("trip_id") != "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Information of this trip:");
-            builder.setMessage(binding.autoCompleteTextView.getText().toString() + "\n" +
-                    binding.editTransportation.getText().toString() + "\n" +
-                    binding.riskSelected.getText().toString() + "\n" +
-                    binding.editDate.getText().toString() + "\n" +
-                    binding.editParticipant.getText().toString() + "\n" +
-                    binding.editDestination.getText().toString() + "\n" +
-                    binding.editDescription.getText().toString() + "\n" );
+            builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
+                    "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
+                    "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
+                    "Date: " + binding.editDate.getText().toString() + "\n" +
+                    "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
+                    "Destination: " + binding.editDestination.getText().toString() + "\n" +
+                    "Description: " + binding.editDescription.getText().toString() + "\n" );
             builder.show();
-            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -267,27 +265,39 @@ public class EditorFragment extends Fragment {
                     Navigation.findNavController(getView()).navigateUp();
                 }
             });
+            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             AlertDialog dialog = builder.create();
             dialog.show();
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Information of the new trip:");
-            builder.setMessage(binding.autoCompleteTextView.getText().toString() + "\n" +
-                    binding.editTransportation.getText().toString() + "\n" +
-                    binding.riskSelected.getText().toString() + "\n" +
-                    binding.editDate.getText().toString() + "\n" +
-                    binding.editParticipant.getText().toString() + "\n" +
-                    binding.editDestination.getText().toString() + "\n" +
-                    binding.editDescription.getText().toString() + "\n" );
+            builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
+                    "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
+                    "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
+                    "Date: " + binding.editDate.getText().toString() + "\n" +
+                    "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
+                    "Destination: " + binding.editDestination.getText().toString() + "\n" +
+                    "Description: " + binding.editDescription.getText().toString() + "\n" );
             builder.show();
-            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     dao.insert(trip);
                     dialog.dismiss();
                     Navigation.findNavController(getView()).navigateUp();
+                }
+            });
+            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
             });
             AlertDialog dialog = builder.create();

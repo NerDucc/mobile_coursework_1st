@@ -18,11 +18,12 @@ public class TripDAO {
     public MutableLiveData<TripEntity> trip = new MutableLiveData<>();
 
     public  MutableLiveData<List<TripEntity>> tripList = new MutableLiveData<List<TripEntity>>();
+
     public TripDAO(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
 
-        tripList = new MutableLiveData<>();
+//        tripList = new MutableLiveData<>();
         {
             tripList.setValue(getAll());
         }
@@ -94,12 +95,9 @@ public class TripDAO {
         return db.delete("trips", "trip_id=?", new String[]{String.valueOf(id)});
     }
 
-    public List<TripEntity> search(String name){
-        String dbGetOne = "SELECT * FROM trips WHERE name LIKE %?% | SELECT * FROM trips WHERE destination LIKE %?% | SELECT * FROM trips WHERE date_trip LIKE %?%";
-
-        List<TripEntity> list = get(dbGetOne, name);
-        return list;
+    public void search(String name){
+        String dbSearch = "SELECT * FROM trips WHERE name LIKE '%?%' ";
+        List<TripEntity> list = get(dbSearch, name);
+        tripList.setValue(list);
     }
-
-
 }

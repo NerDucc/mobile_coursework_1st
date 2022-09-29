@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework_2022_2nd.data.TripEntity;
 import com.example.coursework_2022_2nd.databinding.ListTripBinding;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripViewHolder>  {
+public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripViewHolder> {
+
+
 
     public interface ListTripListener{
         void onItemClick(TripEntity tripId);
@@ -64,6 +69,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripVi
             );
         }
     }
+
 
 
 }

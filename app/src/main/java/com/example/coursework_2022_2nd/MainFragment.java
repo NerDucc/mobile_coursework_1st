@@ -2,11 +2,15 @@ package com.example.coursework_2022_2nd;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -26,7 +30,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.SearchView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.coursework_2022_2nd.data.DBHelper;
@@ -44,19 +49,22 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
     private FragmentMainBinding binding;
     private TripListAdapter adapter;
     TripDAO dao;
+    SearchView searchView;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         AppCompatActivity app = (AppCompatActivity)getActivity();
         ActionBar ab = app.getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setDisplayShowHomeEnabled(true);
+        ab.setHomeButtonEnabled(false);
+        ab.setDisplayShowHomeEnabled(false);
         ab.setDisplayHomeAsUpEnabled(false);
         setHasOptionsMenu(true);
 
         binding = FragmentMainBinding.inflate(inflater, container,  false);
         dao = new TripDAO(getContext());
+
 
         //Creating the recycler view
         RecyclerView rv = binding.recyclerView;
@@ -65,6 +73,7 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                 getContext(),
                 (new LinearLayoutManager(getContext())).getOrientation())
         );
+
 
         //Observe the change of list item for the recycler view
         dao.tripList.observe(
@@ -76,6 +85,7 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
         );
+
 
 
         //Set listener for the adding button
@@ -123,28 +133,24 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
         Navigation.findNavController(getView()).navigate(R.id.editorFragment, bundle);
     }
     @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:  {
-
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                dao.search(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                System.out.println(newText);
+                dao.search(newText);
+                return true;
+            }
+        });
 
     }
-
 }
