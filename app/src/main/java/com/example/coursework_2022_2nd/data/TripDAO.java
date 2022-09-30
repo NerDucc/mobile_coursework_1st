@@ -96,8 +96,10 @@ public class TripDAO {
     }
 
     public void search(String name){
-        String dbSearch = "SELECT * FROM trips WHERE name LIKE '%?%' ";
-        List<TripEntity> list = get(dbSearch, name);
+        String dbSearch = "SELECT * FROM trips WHERE name LIKE ('%" + name + "%')" +
+                " OR " + "date_trip LIKE ('%" + name + "%')" +
+                " OR " + "destination LIKE ('%" + name + "%')";
+        List<TripEntity> list = get(dbSearch);
         tripList.setValue(list);
     }
 }

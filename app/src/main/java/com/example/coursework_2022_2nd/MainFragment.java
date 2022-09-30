@@ -55,6 +55,7 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        // Init the menu bar
         AppCompatActivity app = (AppCompatActivity)getActivity();
         ActionBar ab = app.getSupportActionBar();
         ab.setHomeButtonEnabled(false);
@@ -62,7 +63,10 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
         ab.setDisplayHomeAsUpEnabled(false);
         setHasOptionsMenu(true);
 
+        //Binding
         binding = FragmentMainBinding.inflate(inflater, container,  false);
+
+        //Init the DAO class to get the data
         dao = new TripDAO(getContext());
 
 
@@ -113,13 +117,18 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
     public void onResume() {
         super.onResume();
         Log.i(this.getClass().getName(), "On Resume");
-
         dao.getAll();
     }
 
+
+    //Set click event for a specific trip and navigate to the edit form
     @Override
     public void onItemClick(TripEntity tripInput) {
+
+        //Get the specific ID of the trip by the click listener
         TripEntity trip = dao.getByID(tripInput.getId());
+
+        //Prepare the bundle
         Bundle bundle = new Bundle();
         bundle.putString("trip_id", trip.getId());
         bundle.putString("name",trip.getName());
@@ -130,8 +139,11 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
         bundle.putString("risk",trip.getRisk());
         bundle.putString("transportation", trip.getTransportation());
 
+        //Sending the bundle to the edit form
         Navigation.findNavController(getView()).navigate(R.id.editorFragment, bundle);
     }
+
+    //Init the listener for the search menu
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
@@ -148,9 +160,10 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
             public boolean onQueryTextChange(String newText) {
                 System.out.println(newText);
                 dao.search(newText);
-                return true;
+                return false;
             }
         });
+//        dao.search(Constants.Empty_String);
 
     }
 }

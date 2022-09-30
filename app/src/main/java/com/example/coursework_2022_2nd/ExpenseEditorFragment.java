@@ -92,13 +92,6 @@ public class ExpenseEditorFragment extends Fragment {
                 showDateDialog(editTextDate);
             }
         });
-//        button = binding.actionDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public boolean onClick(View v) {
-//                deleteAndReturn();
-//            }
-//        });
-
         return binding.getRoot();
     }
 
@@ -156,9 +149,10 @@ public class ExpenseEditorFragment extends Fragment {
         expense.setAmount(Integer.parseInt(binding.editAmount.getText().toString()));
         expense.setNotes(binding.comment.getText().toString());
         expense.setT_ID(getArguments().getString("trip_id"));
+
         if (getArguments().getString("expenseID") != "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of the expense of the trip:");
+            builder.setTitle("Information of the updated expense of the trip:");
             builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
                     "Date: "+binding.editDateExpense.getText().toString() + "\n" +
                     "Amount: " + binding.editAmount.getText().toString() + "\n" +
@@ -185,11 +179,11 @@ public class ExpenseEditorFragment extends Fragment {
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of the expense of the trip:");
-            builder.setMessage(binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
-                    binding.editDateExpense.getText().toString() + "\n" +
-                    binding.editAmount.getText().toString() + "\n" +
-                    binding.comment.getText().toString() + "\n");
+            builder.setTitle("Information of the new expense of the trip:");
+            builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
+                    "Date: "+binding.editDateExpense.getText().toString() + "\n" +
+                    "Amount: " + binding.editAmount.getText().toString() + "\n" +
+                    "Comment: " + binding.comment.getText().toString() + "\n");
             builder.show();
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override

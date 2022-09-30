@@ -14,19 +14,16 @@ import java.util.List;
 public class ExpenseDAO {
 
     SQLiteDatabase db;
-
-    String tID;
+    String tripID;
     public MutableLiveData<ExpenseEntity> expense = new MutableLiveData<>();
 
     public  MutableLiveData<List<ExpenseEntity>> expenseList = new MutableLiveData<List<ExpenseEntity>>();
+
     public ExpenseDAO(Context context, String tID) {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
-        this.tID = tID;
-        expenseList = new MutableLiveData<>();
-        {
-            expenseList.setValue(getAll());
-        }
+        this.tripID = tID;
+        {expenseList.setValue(getAll());}
 
     }
     @SuppressLint("Range")
@@ -49,12 +46,12 @@ public class ExpenseDAO {
     }
     public List<ExpenseEntity> getAll(){
         String dbSelect = "SELECT * FROM expense WHERE trip_id =?";
-        return get(dbSelect, tID);
+        return get(dbSelect, tripID);
     }
     public ExpenseEntity getByID(String id){
         String dbGetOne = "SELECT * FROM expense WHERE trip_id = ? and expense_id =?";
 
-        List<ExpenseEntity> list = get(dbGetOne,tID, id);
+        List<ExpenseEntity> list = get(dbGetOne,tripID, id);
         expense.setValue(list.get(0));
         return list.get(0);
     }
@@ -78,11 +75,12 @@ public class ExpenseDAO {
         contentValues.put("expense_date", expenseDB.getDate());
         contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
-        return db.update( "expense",contentValues, "expense_id=? and trip_id =?", new String[]{String.valueOf(expenseDB.getE_ID()), tID});
+        return db.update( "expense",contentValues, "expense_id=? and trip_id =?", new String[]{String.valueOf(expenseDB.getE_ID()), tripID});
     }
 
     public int delete(String id){
         return db.delete("expense", "expense_id=?", new String[]{String.valueOf(id)});
     }
+
 
 }

@@ -82,14 +82,14 @@ public class EditorFragment extends Fragment {
         dao = new TripDAO(getContext());
 
         //Calling the DAO and get the trip by ID sent from MainFragment and it returns the trip
-//        dao.getByID(getArguments().getString("trip_id"));
-
         String idReceived = getArguments().getString("trip_id");
         Bundle bundleReceived = getArguments();
 
+        //Set condition for the update
         if(idReceived != Constants.New_Trip_ID){
             dao.trip.setValue(dao.getByID(idReceived));
         }
+
         //Observing the changes and set text for the editor view from the bundle sent from main
         dao.trip.observe(
                 getViewLifecycleOwner(),
@@ -107,7 +107,6 @@ public class EditorFragment extends Fragment {
 
         //CheckButton
         binding.riskSelected.setInputType(InputType.TYPE_NULL);
-
         radioButtonY = binding.radioYes;
             radioButtonY.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -250,7 +249,7 @@ public class EditorFragment extends Fragment {
             builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
                     "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
                     "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
-                    "Date: " + binding.editDate.getText().toString() + "\n" +
+                    "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
                     "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
                     "Destination: " + binding.editDestination.getText().toString() + "\n" +
                     "Description: " + binding.editDescription.getText().toString() + "\n" );
@@ -280,7 +279,7 @@ public class EditorFragment extends Fragment {
             builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
                     "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
                     "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
-                    "Date: " + binding.editDate.getText().toString() + "\n" +
+                    "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
                     "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
                     "Destination: " + binding.editDestination.getText().toString() + "\n" +
                     "Description: " + binding.editDescription.getText().toString() + "\n" );
@@ -324,7 +323,7 @@ public class EditorFragment extends Fragment {
     }
 
     //Get Date Today
-    private String getTodayDate() {
+    public String getTodayDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -343,13 +342,14 @@ public class EditorFragment extends Fragment {
                 binding.editDate.setText(date);
             }
         };
+
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(requireContext(), style, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog(requireActivity(), style,dateSetListener, year, month, day);
     }
 
     //Convert Date to String

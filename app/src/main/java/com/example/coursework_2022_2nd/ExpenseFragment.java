@@ -23,6 +23,8 @@ import com.example.coursework_2022_2nd.data.SampleDataProvider;
 import com.example.coursework_2022_2nd.databinding.FragmentExpenseBinding;
 import com.example.coursework_2022_2nd.databinding.FragmentMainBinding;
 
+import org.json.JSONObject;
+
 import java.util.Optional;
 
 public class ExpenseFragment extends Fragment implements ExpenseListAdapter.ListExpenseListener{
@@ -41,6 +43,8 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
 
         binding = FragmentExpenseBinding.inflate(inflater, container,  false);
 
+
+
         RecyclerView rv2 = binding.recyclerViewExpense;
         rv2.setHasFixedSize(true);  //each row has equal size regardless of its content
         rv2.addItemDecoration(new DividerItemDecoration(
@@ -52,12 +56,12 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         dao.expenseList.observe(
                 getViewLifecycleOwner(),
                 expenseList -> {
-                    System.out.println("#Expense" + expenseList.size());
                     adapter1 = new ExpenseListAdapter(expenseList, this);
                     binding.recyclerViewExpense.setAdapter(adapter1);
                     binding.recyclerViewExpense.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
         );
+        System.out.println(dao.expenseList);
         //Set listener for the adding button
         binding.fabAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
