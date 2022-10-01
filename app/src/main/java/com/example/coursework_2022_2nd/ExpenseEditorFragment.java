@@ -84,7 +84,7 @@ public class ExpenseEditorFragment extends Fragment {
 
         editTextDate = binding.editDateExpense;
         editTextDate.setInputType(InputType.TYPE_NULL);
-        editTextDate.setText(getTodayDate());
+        editTextDate.setText(DateHandling.getTodayDate());
         editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,12 +95,6 @@ public class ExpenseEditorFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private boolean deleteAndReturn() {
-        Log.i(this.getClass().getName(), "Delete and return");
-        expenseDAO.delete(expenseDAO.expense.getValue().getE_ID());
-        Navigation.findNavController(getView()).navigateUp();
-        return true;
-    }
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -133,7 +127,6 @@ public class ExpenseEditorFragment extends Fragment {
                 Navigation.findNavController(getView()).navigateUp();
             }
         });
-        AlertDialog dialog = builder.create();
         builder.show();
 
         return true;
@@ -174,8 +167,7 @@ public class ExpenseEditorFragment extends Fragment {
                     dialog.dismiss();
                 }
             });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            builder.show();
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -200,8 +192,7 @@ public class ExpenseEditorFragment extends Fragment {
                     dialog.dismiss();
                 }
             });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            builder.show();
 
         }
         return true;
@@ -236,23 +227,13 @@ public class ExpenseEditorFragment extends Fragment {
         return isValidated;
     }
 
-    //Get Date Today
-    private String getTodayDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month+1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
-    }
-
     //Initiate the date picker
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month+1;
-                String date = makeDateString(dayOfMonth, month, year);
+                String date = DateHandling.makeDateString(dayOfMonth, month, year);
                 binding.editDateExpense.setText(date);
             }
         };
@@ -263,42 +244,6 @@ public class ExpenseEditorFragment extends Fragment {
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(requireContext(), style, dateSetListener, year, month, day);
-    }
-
-    //Convert Date to String
-    private String makeDateString(int dayOfMonth, int month, int year) {
-        return getMonthFormat(month) + " " +  dayOfMonth + "," + year;
-    }
-
-    //Convert Month to String
-    private String getMonthFormat(int month) {
-        if(month == 1)
-            return "January";
-        if(month == 2)
-            return "February";
-        if(month == 3)
-            return "March";
-        if(month == 4)
-            return "April";
-        if(month == 5)
-            return "May";
-        if(month == 6)
-            return "June";
-        if(month == 7)
-            return "July";
-        if(month == 8)
-            return "August";
-        if(month == 9)
-            return "September";
-        if(month == 10)
-            return "October";
-        if(month == 11)
-            return "November";
-        if(month == 12)
-            return "December";
-        //default should never happen
-        return "January";
-
     }
 
     //Showing the date picker to the edittext

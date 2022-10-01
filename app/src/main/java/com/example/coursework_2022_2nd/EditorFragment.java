@@ -126,12 +126,12 @@ public class EditorFragment extends Fragment {
         //DatePicker
         editTextDate = binding.editDate;
         editTextDate.setInputType(InputType.TYPE_NULL);
-        editTextDate.setText(getTodayDate());
+        editTextDate.setText(DateHandling.getTodayDate());
             editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initDatePicker();
-                showDateDialog(editTextDate);
+                showDateDialog();
                 }
             });
 
@@ -208,16 +208,14 @@ public class EditorFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete this trip");
         builder.setMessage("This trip will be permanently deleted ");
-        builder.show();
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dao.delete(dao.trip.getValue().getId());
-                dialog.dismiss();
                 Navigation.findNavController(getView()).navigateUp();
             }
         });
-        builder.create().show();
+        builder.show();
 
         return true;
     }
@@ -264,14 +262,14 @@ public class EditorFragment extends Fragment {
                     Navigation.findNavController(getView()).navigateUp();
                 }
             });
+
             builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            builder.show();
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -293,14 +291,14 @@ public class EditorFragment extends Fragment {
                     Navigation.findNavController(getView()).navigateUp();
                 }
             });
+
             builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            builder.show();
         }
         return true;
     }
@@ -322,23 +320,13 @@ public class EditorFragment extends Fragment {
         }
     }
 
-    //Get Date Today
-    public String getTodayDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month+1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
-    }
-
     //Initiate the date picker
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month+1;
-                String date = makeDateString(dayOfMonth, month, year);
+                String date = DateHandling.makeDateString(dayOfMonth, month, year);
                 binding.editDate.setText(date);
             }
         };
@@ -352,46 +340,9 @@ public class EditorFragment extends Fragment {
         datePickerDialog = new DatePickerDialog(requireActivity(), style,dateSetListener, year, month, day);
     }
 
-    //Convert Date to String
-    private String makeDateString(int dayOfMonth, int month, int year) {
-        return getMonthFormat(month) + " " +  dayOfMonth + "," + year;
-    }
-
-    //Convert Month to String
-    private String getMonthFormat(int month) {
-        if(month == 1)
-            return "January";
-        if(month == 2)
-            return "February";
-        if(month == 3)
-            return "March";
-        if(month == 4)
-            return "April";
-        if(month == 5)
-            return "May";
-        if(month == 6)
-            return "June";
-        if(month == 7)
-            return "July";
-        if(month == 8)
-            return "August";
-        if(month == 9)
-            return "September";
-        if(month == 10)
-            return "October";
-        if(month == 11)
-            return "November";
-        if(month == 12)
-            return "December";
-        //default should never happen
-        return "January";
-
-    }
-
     //Showing the date picker to the edittext
-    private void showDateDialog(EditText editTextDate) {
+    private void showDateDialog() {
         datePickerDialog.show();
     }
-
 
 }

@@ -23,10 +23,9 @@ public class TripDAO {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
 
-//        tripList = new MutableLiveData<>();
-        {
-            tripList.setValue(getAll());
-        }
+//        {
+//            tripList.setValue(getAll());
+//        }
 
     }
 
@@ -95,10 +94,10 @@ public class TripDAO {
         return db.delete("trips", "trip_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void search(String name){
-        String dbSearch = "SELECT * FROM trips WHERE name LIKE ('%" + name + "%')" +
-                " OR " + "date_trip LIKE ('%" + name + "%')" +
-                " OR " + "destination LIKE ('%" + name + "%')";
+    public void search(String search){
+        String dbSearch = "SELECT * FROM trips WHERE name LIKE ('%" + search + "%')" +
+                " OR " + "date_trip LIKE ('%" + search + "%')" +
+                " OR " + "destination LIKE ('%" + search + "%')";
         List<TripEntity> list = get(dbSearch);
         tripList.setValue(list);
     }

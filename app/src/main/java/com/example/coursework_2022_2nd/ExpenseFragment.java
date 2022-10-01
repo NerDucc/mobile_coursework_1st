@@ -51,7 +51,9 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                 getContext(),
                 (new LinearLayoutManager(getContext())).getOrientation())
         );
-        dao = new ExpenseDAO(getContext(), getArguments().getString("trip_id"));
+        String tripID = getArguments().getString("trip_id");
+        dao = new ExpenseDAO(getContext(), tripID);
+        dao.expenseList.setValue(dao.getAll());
 
         dao.expenseList.observe(
                 getViewLifecycleOwner(),
@@ -61,7 +63,7 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                     binding.recyclerViewExpense.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
         );
-        System.out.println(dao.expenseList);
+//        System.out.println(dao.expenseList);
         //Set listener for the adding button
         binding.fabAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +92,6 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         bundle.putString("trip_id", expense.getT_ID());
         bundle.putString("comment", expense.getNotes());
         Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
-        System.out.println(bundle);
+//        System.out.println(bundle);
     }
 }

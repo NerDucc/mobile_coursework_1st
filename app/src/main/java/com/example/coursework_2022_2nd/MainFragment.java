@@ -69,6 +69,8 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
         //Init the DAO class to get the data
         dao = new TripDAO(getContext());
 
+        dao.tripList.setValue(dao.getAll());
+
 
         //Creating the recycler view
         RecyclerView rv = binding.recyclerView;
@@ -163,7 +165,5 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                 return false;
             }
         });
-//        dao.search(Constants.Empty_String);
-
     }
 }
