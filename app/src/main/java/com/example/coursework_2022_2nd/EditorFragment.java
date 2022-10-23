@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +31,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,12 +52,13 @@ import java.util.Locale;
 
 public class EditorFragment extends Fragment {
 
+    private Switch aSwitch;
     private FragmentEditorBinding binding;
-    private RadioButton radioButtonY;
-    private RadioButton radioButtonN;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
     TripDAO dao;
+    boolean riskCheck;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onResume() {
@@ -106,21 +111,39 @@ public class EditorFragment extends Fragment {
         );
 
         //CheckButton
+//        binding.riskSelected.setInputType(InputType.TYPE_NULL);
+//        radioButtonY = binding.radioYes;
+//            radioButtonY.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onRadioButtonClicked(v);
+//                }
+//            });
+//        radioButtonN = binding.radioNo;
+//            radioButtonN.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onRadioButtonClicked(v);
+//                }
+//            });
         binding.riskSelected.setInputType(InputType.TYPE_NULL);
-        radioButtonY = binding.radioYes;
-            radioButtonY.setOnClickListener(new View.OnClickListener() {
+        aSwitch = binding.switchRisk;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    onRadioButtonClicked(v);
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        binding.riskSelected.setText("Risk assessment required");
+                        sharedPreferences.edit().putBoolean("Notification", true).apply();
+                    } else {
+                        binding.riskSelected.setText("No risk assessment required");
+                        sharedPreferences.edit().putBoolean("Notification", false).apply();
+                    }
                 }
             });
-        radioButtonN = binding.radioNo;
-            radioButtonN.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onRadioButtonClicked(v);
-                }
-            });
+        riskCheck = sharedPreferences.getBoolean("Notification", true);
+        aSwitch.setChecked(riskCheck);
+
 
 
         //DatePicker
@@ -244,7 +267,7 @@ public class EditorFragment extends Fragment {
         if (getArguments().getString("trip_id") != "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Information of this trip:");
-            builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
+            builder.setMessage("Name of the trip: " + binding.autoCompleteTextView.getText().toString() + "\n" +
                     "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
                     "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
                     "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
@@ -274,7 +297,7 @@ public class EditorFragment extends Fragment {
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Information of the new trip:");
-            builder.setMessage("Name: " + binding.autoCompleteTextView.getText().toString() + "\n" +
+            builder.setMessage("Name of the trip: " + binding.autoCompleteTextView.getText().toString() + "\n" +
                     "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
                     "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
                     "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
@@ -304,21 +327,21 @@ public class EditorFragment extends Fragment {
     }
 
     //Handling Radio Button Clicked
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_yes:
-                if (checked)
-                    binding.riskSelected.setText("Risk assessment required");
-                    break;
-            case R.id.radio_no:
-                if (checked)
-                    binding.riskSelected.setText("No risk assessment required");
-                break;
-        }
-    }
+//    public void onRadioButtonClicked(View view) {
+//        // Is the button now checked?
+//        boolean checked = ((RadioButton) view).isChecked();
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.radio_yes:
+//                if (checked)
+//                    binding.riskSelected.setText("Risk assessment required");
+//                    break;
+//            case R.id.radio_no:
+//                if (checked)
+//                    binding.riskSelected.setText("No risk assessment required");
+//                break;
+//        }
+//    }
 
     //Initiate the date picker
     private void initDatePicker() {

@@ -1,6 +1,8 @@
 package com.example.coursework_2022_2nd;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,13 +42,14 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        AppCompatActivity aca = (AppCompatActivity) getActivity();
-        aca.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+        AppCompatActivity app = (AppCompatActivity)getActivity();
+        ActionBar ab = app.getSupportActionBar();
+        ab.setHomeButtonEnabled(false);
+        ab.setDisplayShowHomeEnabled(false);
+        ab.setDisplayHomeAsUpEnabled(false);
+        setHasOptionsMenu(true);
 
         binding = FragmentExpenseBinding.inflate(inflater, container,  false);
-
-
 
         RecyclerView rv2 = binding.recyclerViewExpense;
         rv2.setHasFixedSize(true);  //each row has equal size regardless of its content
@@ -76,6 +82,13 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
             }
         });
 
+        binding.fabUploadExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return binding.getRoot();
 
     }
@@ -93,5 +106,23 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         bundle.putString("comment", expense.getNotes());
         Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
 //        System.out.println(bundle);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.expense_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_home:
+                return backHome();
+            default: return super.onOptionsItemSelected(item);}
+    }
+
+    private boolean backHome() {
+        Navigation.findNavController(getView()).navigate(R.id.mainFragment);
+        return true;
     }
 }

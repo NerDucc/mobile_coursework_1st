@@ -15,6 +15,7 @@
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/drawable/ic_outline_save_24.xml" value="0.2125" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/activity_main.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/dropdown_tripname.xml" value="0.2734375" />
+        <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/empty_list.xml" value="0.2734375" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/fragment_editor.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/fragment_expense.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/fragment_expense_editor.xml" value="0.27447916666666666" />
@@ -22,6 +23,8 @@
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/list_expense.xml" value="0.2734375" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/layout/list_trip.xml" value="0.22521367521367522" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/menu/expense_delete.xml" value="0.2734375" />
+        <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/menu/expense_home.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/menu/expense_menu.xml" value="0.2734375" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/menu/main_menu.xml" value="0.205078125" />
         <entry key="..\:/Users/ThinkPad/AndroidStudioProjects/CourseWork_2022_2nd/app/src/main/res/menu/trip_delete.xml" value="0.27447916666666666" />
       </map>
