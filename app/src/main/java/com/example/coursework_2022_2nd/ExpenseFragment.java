@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.coursework_2022_2nd.data.ExpenseDAO;
 import com.example.coursework_2022_2nd.data.ExpenseEntity;
@@ -51,6 +52,8 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
 
         binding = FragmentExpenseBinding.inflate(inflater, container,  false);
 
+        TextView empty3 = binding.empty3;
+        TextView empty4 = binding.empty4;
         RecyclerView rv2 = binding.recyclerViewExpense;
         rv2.setHasFixedSize(true);  //each row has equal size regardless of its content
         rv2.addItemDecoration(new DividerItemDecoration(
@@ -67,7 +70,18 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                     adapter1 = new ExpenseListAdapter(expenseList, this);
                     binding.recyclerViewExpense.setAdapter(adapter1);
                     binding.recyclerViewExpense.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    if(expenseList.size() == 0){
+                        empty3.setVisibility(View.VISIBLE);
+                        empty4.setVisibility(View.VISIBLE);
+                        rv2.setVisibility(View.GONE);
+                    }
+                    else{
+                        empty3.setVisibility(View.GONE);
+                        empty4.setVisibility(View.GONE);
+                        rv2.setVisibility(View.VISIBLE);
+                    }
                 }
+
         );
 //        System.out.println(dao.expenseList);
         //Set listener for the adding button

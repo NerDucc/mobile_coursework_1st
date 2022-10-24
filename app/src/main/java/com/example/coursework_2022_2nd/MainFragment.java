@@ -72,8 +72,8 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
 
         dao.tripList.setValue(dao.getAll());
 
-//        TextView empty1 = binding.empty1;
-//        TextView empty2 = binding.empty2;
+        TextView empty1 = binding.empty1;
+        TextView empty2 = binding.empty2;
 
         //Creating the recycler view
         RecyclerView rv = binding.recyclerView;
@@ -92,16 +92,16 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                     adapter = new TripListAdapter(tripList, this);
                     binding.recyclerView.setAdapter(adapter);
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                    if(tripList.size() == 0){
-//                        empty1.setVisibility(View.VISIBLE);
-//                        empty2.setVisibility(View.VISIBLE);
-//                        rv.setVisibility(View.GONE);
-//                    }
-//                    else{
-//                        empty1.setVisibility(View.GONE);
-//                        empty2.setVisibility(View.GONE);
-//                        rv.setVisibility(View.VISIBLE);
-//                    }
+                    if(tripList.size() == 0){
+                        empty1.setVisibility(View.VISIBLE);
+                        empty2.setVisibility(View.VISIBLE);
+                        rv.setVisibility(View.GONE);
+                    }
+                    else{
+                        empty1.setVisibility(View.GONE);
+                        empty2.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                    }
                 }
         );
 
