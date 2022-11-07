@@ -82,8 +82,7 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                 getContext(),
                 (new LinearLayoutManager(getContext())).getOrientation())
         );
-
-
+ 
         //Observe the change of list item for the recycler view
         dao.tripList.observe(
                 getViewLifecycleOwner(),
@@ -104,8 +103,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                     }
                 }
         );
-
-
 
         //Set listener for the adding button
         binding.fabAddTrip.setOnClickListener(new View.OnClickListener() {
