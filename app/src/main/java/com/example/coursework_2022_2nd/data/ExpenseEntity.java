@@ -9,14 +9,16 @@ public class ExpenseEntity {
     private String date;
     private String notes;
     private Integer amount;
+    private String location;
     private String T_ID;
 
-    public ExpenseEntity( String type, String date, String notes, Integer amount, String T_ID) {
+    public ExpenseEntity( String type, String date, String notes, Integer amount, String location ,String T_ID) {
         this.E_ID = Constants.New_Trip_ID;
         this.type = type;
         this.date = date;
         this.notes = notes;
         this.amount = amount;
+        this.location = location;
         this.T_ID = T_ID;
     }
 
@@ -28,12 +30,13 @@ public class ExpenseEntity {
         T_ID = t_ID;
     }
 
-    public ExpenseEntity(String e_ID, String type, String date, String notes, Integer amount, String T_ID) {
+    public ExpenseEntity(String e_ID, String type, String date, String notes, Integer amount,String location ,String T_ID) {
         setE_ID(e_ID);
         setType(type);
         setAmount(amount);
         setDate(date);
         setNotes(notes);
+        setLocation(location);
         setT_ID(T_ID);
     }
     public ExpenseEntity() {
@@ -43,6 +46,7 @@ public class ExpenseEntity {
                 Constants.Empty_String,
                 Constants.Empty_String,
                 0,
+                Constants.Empty_String,
                 Constants.Empty_String
         );
     }
@@ -98,5 +102,13 @@ public class ExpenseEntity {
                 ", date ='" +date+'\'' +
                 ", notes ='" +notes +
                         '}';
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

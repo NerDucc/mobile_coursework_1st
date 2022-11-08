@@ -39,7 +39,7 @@ public class ExpenseDAO {
             expenseDB.setNotes(cursor.getString(cursor.getColumnIndex("expense_comment")));
             expenseDB.setAmount(cursor.getInt(cursor.getColumnIndex("expense_amount")));
             expenseDB.setT_ID(cursor.getString(cursor.getColumnIndex("trip_id")));
-
+            expenseDB.setLocation(cursor.getString(cursor.getColumnIndex("expense_location")));
             list.add(expenseDB);
         }
         return list;
@@ -63,6 +63,7 @@ public class ExpenseDAO {
         contentValues.put("expense_date", expenseDB.getDate());
         contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
+        contentValues.put("expense_location", expenseDB.getLocation());
         contentValues.put("trip_id", expenseDB.getT_ID());
 
         return db.insert( "expense",null,contentValues);
@@ -75,6 +76,7 @@ public class ExpenseDAO {
         contentValues.put("expense_date", expenseDB.getDate());
         contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
+        contentValues.put("expense_location", expenseDB.getLocation());
         return db.update( "expense",contentValues, "expense_id=? and trip_id =?", new String[]{String.valueOf(expenseDB.getE_ID()), tripID});
     }
 

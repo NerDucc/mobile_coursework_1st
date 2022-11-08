@@ -41,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     "expense_amount INTEGER, " +
                     "expense_date TEXT, " +
                     "expense_comment TEXT, " +
+                    "expense_location TEXT, " +
                     "trip_id INTEGER," +
                     "FOREIGN KEY(trip_id) " +
                     "REFERENCES trips(trip_id))");

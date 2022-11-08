@@ -118,6 +118,7 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         bundle.putString("expense_date", expense.getDate());
         bundle.putString("trip_id", expense.getT_ID());
         bundle.putString("comment", expense.getNotes());
+        bundle.putString("location", expense.getLocation());
         Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
 //        System.out.println(bundle);
     }

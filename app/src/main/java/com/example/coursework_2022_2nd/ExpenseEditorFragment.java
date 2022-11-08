@@ -2,11 +2,20 @@ package com.example.coursework_2022_2nd;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,15 +40,26 @@ import com.example.coursework_2022_2nd.data.ExpenseDAO;
 import com.example.coursework_2022_2nd.data.ExpenseEntity;
 import com.example.coursework_2022_2nd.data.TripEntity;
 import com.example.coursework_2022_2nd.databinding.FragmentExpenseEditorBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class ExpenseEditorFragment extends Fragment {
 
-    private FragmentExpenseEditorBinding  binding;
+    private FragmentExpenseEditorBinding binding;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
+    EditText editLocation;
     ExpenseDAO expenseDAO;
+    Button btnLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    String locationReceived;
 
     @Override
     public void onResume() {
@@ -47,11 +67,12 @@ public class ExpenseEditorFragment extends Fragment {
         String[] expenseName = getResources().getStringArray(R.array.ExpenseName);
         binding.autoCompleteTextViewExpense.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.dropdown_tripname, expenseName));
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        AppCompatActivity app = (AppCompatActivity)getActivity();
+        AppCompatActivity app = (AppCompatActivity) getActivity();
         ActionBar ab = app.getSupportActionBar();
         ab.setHomeButtonEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
@@ -65,10 +86,32 @@ public class ExpenseEditorFragment extends Fragment {
         String tripId = getArguments().getString("trip_id");
         Bundle bundleReceived = getArguments();
 
+        btnLocation = binding.getLocationBtn;
+        editLocation = binding.location;
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Ask for permission
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    //Permission granted
+
+                    getLocation();
+//                    System.out.println("We are hereeeeee");
+
+                } else {
+                    //Permission denied
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                }
+            }
+        });
+
         expenseDAO = new ExpenseDAO(getContext(), tripId);
         String expenseIdReceived = getArguments().getString("expenseID");
 
-        if(!expenseIdReceived.equals(Constants.New_Trip_ID)){
+        if (!expenseIdReceived.equals(Constants.New_Trip_ID)) {
             expenseDAO.expense.setValue(expenseDAO.getByID(expenseIdReceived));
         }
         expenseDAO.expense.observe(
@@ -78,6 +121,7 @@ public class ExpenseEditorFragment extends Fragment {
                     binding.editDateExpense.setText(bundleReceived.getString("expense_date"));
                     binding.editAmount.setText(bundleReceived.getString("expense_amount"));
                     binding.comment.setText(bundleReceived.getString("comment"));
+                    binding.location.setText(bundleReceived.getString("location"));
                     requireActivity().invalidateOptionsMenu();
                 }
         );
@@ -93,6 +137,30 @@ public class ExpenseEditorFragment extends Fragment {
             }
         });
         return binding.getRoot();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocation() {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    //Initialize location
+                    Location location = task.getResult();
+                    if (location != null) {
+                        try {
+                            //Initialize address list
+                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            System.out.println(addressList.get(0).getAddressLine(0) + "," + addressList.get(0).getLocality());
+                            editLocation.setText(addressList.get(0).getAddressLine(0));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+
     }
 
 
@@ -127,6 +195,13 @@ public class ExpenseEditorFragment extends Fragment {
                 Navigation.findNavController(getView()).navigateUp();
             }
         });
+//        builder.show();
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.show();
 
         return true;
@@ -142,6 +217,7 @@ public class ExpenseEditorFragment extends Fragment {
         expense.setAmount(Integer.parseInt(binding.editAmount.getText().toString()));
         expense.setNotes(binding.comment.getText().toString());
         expense.setT_ID(getArguments().getString("trip_id"));
+        expense.setLocation(binding.location.getText().toString());
 
         if (getArguments().getString("expenseID") != "0"){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -149,8 +225,9 @@ public class ExpenseEditorFragment extends Fragment {
             builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
                     "Date: "+binding.editDateExpense.getText().toString() + "\n" +
                     "Amount: " + binding.editAmount.getText().toString() + "\n" +
+                    "Location: " + binding.location.getText().toString() + "\n" +
                     "Comment: " + binding.comment.getText().toString() + "\n");
-            builder.show();
+//            builder.show();
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -175,8 +252,9 @@ public class ExpenseEditorFragment extends Fragment {
             builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
                     "Date: "+binding.editDateExpense.getText().toString() + "\n" +
                     "Amount: " + binding.editAmount.getText().toString() + "\n" +
+                    "Location: " + binding.location.getText().toString() + "\n" +
                     "Comment: " + binding.comment.getText().toString() + "\n");
-            builder.show();
+//            builder.show();
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

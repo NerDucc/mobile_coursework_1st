@@ -238,8 +238,13 @@ public class EditorFragment extends Fragment {
                 Navigation.findNavController(getView()).navigateUp();
             }
         });
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         builder.show();
-
         return true;
     }
 
@@ -274,7 +279,7 @@ public class EditorFragment extends Fragment {
                     "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
                     "Destination: " + binding.editDestination.getText().toString() + "\n" +
                     "Description: " + binding.editDescription.getText().toString() + "\n" );
-            builder.show();
+//            builder.show();
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -304,7 +309,7 @@ public class EditorFragment extends Fragment {
                     "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
                     "Destination: " + binding.editDestination.getText().toString() + "\n" +
                     "Description: " + binding.editDescription.getText().toString() + "\n" );
-            builder.show();
+//            builder.show();
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
