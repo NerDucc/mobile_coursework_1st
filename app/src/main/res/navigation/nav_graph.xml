@@ -36,5 +36,14 @@
         android:id="@+id/expenseEditorFragment"
         android:name="com.example.coursework_2022_2nd.ExpenseEditorFragment"
         android:label="fragment_expense_editor"
-        tools:layout="@layout/fragment_expense_editor" />
+        tools:layout="@layout/fragment_expense_editor" >
+        <action
+            android:id="@+id/action_expenseEditorFragment_to_jsonWeb"
+            app:destination="@id/jsonWeb" />
+    </fragment>
+    <fragment
+        android:id="@+id/jsonWeb"
+        android:name="com.example.coursework_2022_2nd.JsonWeb"
+        android:label="fragment_json_web"
+        tools:layout="@layout/fragment_json_web" />
 </navigation>

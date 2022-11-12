@@ -2,6 +2,10 @@ package com.example.coursework_2022_2nd.data;
 
 import com.example.coursework_2022_2nd.Constants;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 public class ExpenseEntity {
 
     private String E_ID;
@@ -102,6 +106,13 @@ public class ExpenseEntity {
                 ", date ='" +date+'\'' +
                 ", notes ='" +notes +
                         '}';
+    }
+    public JSONObject toMap(){
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", type);
+        map.put("description", notes);
+        JSONObject detail = new JSONObject(map);
+        return detail;
     }
 
     public String getLocation() {
