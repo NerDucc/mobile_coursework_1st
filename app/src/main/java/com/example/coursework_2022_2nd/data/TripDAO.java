@@ -22,11 +22,6 @@ public class TripDAO {
     public TripDAO(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
-
-//        {
-//            tripList.setValue(getAll());
-//        }
-
     }
 
 

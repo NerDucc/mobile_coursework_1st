@@ -23,8 +23,6 @@ public class ExpenseDAO {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
         this.tripID = tID;
-//        {expenseList.setValue(getAll());}
-
     }
     @SuppressLint("Range")
     public List<ExpenseEntity> get(String EXPENSE_CREATE, String ... selectArgs){

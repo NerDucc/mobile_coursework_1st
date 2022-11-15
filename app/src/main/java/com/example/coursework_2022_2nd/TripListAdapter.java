@@ -25,11 +25,11 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripVi
         void onItemClick(TripEntity tripId);
     }
 
-    private List<TripEntity> tripList;
+    private List<TripEntity> trips;
     private ListTripListener listener;
 
     public TripListAdapter(List<TripEntity> tripList, ListTripListener listener) {
-        this.tripList = tripList;
+        this.trips = tripList;
         this.listener = listener;
     }
 
@@ -42,13 +42,13 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripVi
 
     @Override
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
-        TripEntity tData = tripList.get(position);
+        TripEntity tData = trips.get(position);
         holder.bindData(tData);
     }
 
     @Override
     public int getItemCount() {
-        return tripList.size();
+        return trips.size();
     }
 
     public class TripViewHolder extends RecyclerView.ViewHolder{
@@ -61,7 +61,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripVi
         }
 
         public void bindData(TripEntity tData){
-            itemViewBinding.tripName.setText(tData.getName());
+            itemViewBinding.tripName.setText(tData.getName() + "\n" + tData.getDate());
             itemViewBinding.getRoot().setOnClickListener(
                     v -> {
                         listener.onItemClick(tData);

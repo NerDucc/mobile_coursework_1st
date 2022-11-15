@@ -111,6 +111,9 @@ public class ExpenseEntity {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("name", type);
         map.put("description", notes);
+        map.put("date", date);
+        map.put("location", location);
+        map.put("amount", amount);
         JSONObject detail = new JSONObject(map);
         return detail;
     }

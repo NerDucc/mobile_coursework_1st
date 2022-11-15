@@ -87,7 +87,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
         dao.tripList.observe(
                 getViewLifecycleOwner(),
                 tripList -> {
-                    System.out.println(tripList.size());
                     adapter = new TripListAdapter(tripList, this);
                     binding.recyclerView.setAdapter(adapter);
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -170,7 +169,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                System.out.println(newText);
                 dao.search(newText);
                 return false;
             }

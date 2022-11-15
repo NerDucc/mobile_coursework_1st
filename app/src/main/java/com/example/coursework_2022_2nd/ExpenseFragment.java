@@ -42,7 +42,6 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
     private FragmentExpenseBinding binding;
     private ExpenseListAdapter adapter1;
     ExpenseDAO dao;
-    String serviceLink = "https://cwservice1786.herokuapp.com/sendPayLoad";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,7 +65,6 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                 (new LinearLayoutManager(getContext())).getOrientation())
         );
         String tripID = getArguments().getString("trip_id");
-        String nameTrip = getArguments().getString("name");
         dao = new ExpenseDAO(getContext(), tripID);
         dao.expenseList.setValue(dao.getAll());
 
@@ -119,11 +117,17 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                     String jsonString = jsonObject.toString();
                     Bundle bundle = new Bundle();
                     bundle.putString("json", jsonString);
+                    String showDialog = "";
+                    String fool = "";
+                    for(ExpenseEntity e : dao.getAll()){
+                        fool = "Name: " + e.getType() + "\n" +  "Date: " + e.getDate() + "\n" +"Location: " + e.getLocation() + "\n" +"Amount: " + e.getAmount() + "\n" + "\n";
+                        showDialog += fool;
+                        fool = "";
+                    }
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Information:");
-                    builder.setMessage(
-                       jsonString
-                    );
+                    builder.setMessage(showDialog);
+
                     builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

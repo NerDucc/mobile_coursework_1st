@@ -124,12 +124,45 @@ public class JsonWeb extends Fragment {
                 {
                     String page = generatePage(response);
                     webView.loadData(page, "text/html", "UTF-8");
+//                    webView.getSettings().setBuiltInZoomControls(true);
                 }
             });
         }
 
         private String generatePage(String response) {
-            return "<html><body><p>" + response + "</p></body></html>";
+            return "<html>" +
+                    "<style>\n" +
+                    "        * {\n" +
+                    "            padding: 0;\n" +
+                    "            margin: 0;\n" +
+                    "            box-sizing: border-box;\n" +
+                    "        }\n" +
+                    "\n" +
+                    "        table,\n" +
+                    "        td,\n" +
+                    "        th {\n" +
+                    "            border: 1px solid #000;\n" +
+                    "        }\n" +
+                    "        table{\n" +
+                    "            width: 100px;\n" +
+                    "        }\n" +
+                    "    </style>" +
+                    "<body>" +
+                    "<table>\n" +
+                    "        <thead>\n" +
+                    "            <tr>\n" +
+                    "                <th>Title</th>\n" +
+                    "            </tr>\n" +
+                    "        </thead>\n" +
+                    "        <tr>\n" +
+                    "            <th>\n" +
+                    "                <p>" + response + "</p>\n" +
+                    "            </th>\n" +
+                    "        </tr>\n" +
+                    "        </tbody>\n" +
+                    "    </table>" +
+                    "</body>" +
+                    "</html>";
         }
 
 
