@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class ExpenseEntity {
-
     private String E_ID;
     private String type;
     private String date;
@@ -25,7 +24,6 @@ public class ExpenseEntity {
         this.location = location;
         this.T_ID = T_ID;
     }
-
     public String getT_ID() {
         return T_ID;
     }
@@ -117,7 +115,6 @@ public class ExpenseEntity {
         JSONObject detail = new JSONObject(map);
         return detail;
     }
-
     public String getLocation() {
         return location;
     }

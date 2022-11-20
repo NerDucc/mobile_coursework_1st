@@ -24,13 +24,10 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-
 public class JsonWeb extends Fragment {
-
     FragmentJsonWebBinding binding;
     WebView webView;
     String serviceLink = "https://cwservice1786.herokuapp.com/sendPayLoad";
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +58,6 @@ public class JsonWeb extends Fragment {
             this.con = con;
             this.jsonPayLoad = jsonPayLoad;
         }
-
         @Override
         public void run() {
             String response = "";
@@ -124,43 +120,14 @@ public class JsonWeb extends Fragment {
                 {
                     String page = generatePage(response);
                     webView.loadData(page, "text/html", "UTF-8");
-//                    webView.getSettings().setBuiltInZoomControls(true);
                 }
             });
         }
 
         private String generatePage(String response) {
             return "<html>" +
-                    "<style>\n" +
-                    "        * {\n" +
-                    "            padding: 0;\n" +
-                    "            margin: 0;\n" +
-                    "            box-sizing: border-box;\n" +
-                    "        }\n" +
-                    "\n" +
-                    "        table,\n" +
-                    "        td,\n" +
-                    "        th {\n" +
-                    "            border: 1px solid #000;\n" +
-                    "        }\n" +
-                    "        table{\n" +
-                    "            width: 100px;\n" +
-                    "        }\n" +
-                    "    </style>" +
                     "<body>" +
-                    "<table>\n" +
-                    "        <thead>\n" +
-                    "            <tr>\n" +
-                    "                <th>Title</th>\n" +
-                    "            </tr>\n" +
-                    "        </thead>\n" +
-                    "        <tr>\n" +
-                    "            <th>\n" +
-                    "                <p>" + response + "</p>\n" +
-                    "            </th>\n" +
-                    "        </tr>\n" +
-                    "        </tbody>\n" +
-                    "    </table>" +
+                    "<p>" + response + "</p>\n" +
                     "</body>" +
                     "</html>";
         }

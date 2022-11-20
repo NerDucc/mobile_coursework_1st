@@ -21,13 +21,11 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_expense, parent, false);
         return new ExpenseListAdapter.ExpenseViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         ExpenseEntity e = expenseList.get(position);
         holder.bindData(e);
     }
-
     @Override
     public int getItemCount() {
         return expenseList.size();
@@ -36,8 +34,6 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     public interface ListExpenseListener{
         void onItemClick(ExpenseEntity expenseId);
     }
-
-
     public class ExpenseViewHolder extends RecyclerView.ViewHolder{
 
         private final ListExpenseBinding itemViewBinding;

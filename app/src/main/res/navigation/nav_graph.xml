@@ -47,3 +47,4 @@
         android:label="fragment_json_web"
         tools:layout="@layout/fragment_json_web" />
 </navigation>
+

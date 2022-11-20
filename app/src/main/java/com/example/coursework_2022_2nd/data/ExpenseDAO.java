@@ -12,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseDAO {
-
     SQLiteDatabase db;
     String tripID;
     public MutableLiveData<ExpenseEntity> expense = new MutableLiveData<>();
-
     public  MutableLiveData<List<ExpenseEntity>> expenseList = new MutableLiveData<List<ExpenseEntity>>();
 
     public ExpenseDAO(Context context, String tID) {
@@ -76,7 +74,8 @@ public class ExpenseDAO {
         contentValues.put("expense_comment", expenseDB.getNotes());
         contentValues.put("expense_amount", expenseDB.getAmount().toString());
         contentValues.put("expense_location", expenseDB.getLocation());
-        return db.update( "expense",contentValues, "expense_id=? and trip_id =?", new String[]{String.valueOf(expenseDB.getE_ID()), tripID});
+        return db.update( "expense",contentValues, "expense_id=? and trip_id =?",
+                new String[]{String.valueOf(expenseDB.getE_ID()), tripID});
     }
 
     public int delete(String id){

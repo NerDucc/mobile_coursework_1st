@@ -19,20 +19,16 @@ import java.util.Locale;
 
 public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.TripViewHolder> {
 
-
-
     public interface ListTripListener{
         void onItemClick(TripEntity tripId);
     }
 
     private List<TripEntity> trips;
     private ListTripListener listener;
-
     public TripListAdapter(List<TripEntity> tripList, ListTripListener listener) {
         this.trips = tripList;
         this.listener = listener;
     }
-
     @NonNull
     @Override
     public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

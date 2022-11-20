@@ -110,22 +110,7 @@ public class EditorFragment extends Fragment {
                 }
         );
 
-        //CheckButton
-//        binding.riskSelected.setInputType(InputType.TYPE_NULL);
-//        radioButtonY = binding.radioYes;
-//            radioButtonY.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    onRadioButtonClicked(v);
-//                }
-//            });
-//        radioButtonN = binding.radioNo;
-//            radioButtonN.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    onRadioButtonClicked(v);
-//                }
-//            });
+
         binding.riskSelected.setInputType(InputType.TYPE_NULL);
         aSwitch = binding.switchRisk;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -269,84 +254,40 @@ public class EditorFragment extends Fragment {
         trip.setDestination(binding.editDestination.getText().toString());
         trip.setDescription(binding.editDescription.getText().toString());
 
-        if (getArguments().getString("trip_id") != "0"){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of this trip:");
-            builder.setMessage("Name of the trip: " + binding.autoCompleteTextView.getText().toString() + "\n" +
-                    "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
-                    "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
-                    "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
-                    "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
-                    "Destination: " + binding.editDestination.getText().toString() + "\n" +
-                    "Description: " + binding.editDescription.getText().toString() + "\n" );
-//            builder.show();
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Information of this trip:");
+        builder.setMessage("Name of the trip: " + binding.autoCompleteTextView.getText().toString() + "\n" +
+                "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
+                "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
+                "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
+                "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
+                "Destination: " + binding.editDestination.getText().toString() + "\n" +
+                "Description: " + binding.editDescription.getText().toString() + "\n" );
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (getArguments().getString("trip_id") != "0"){
                     trip.setId(getArguments().getString("trip_id"));
                     dao.update(trip);
-                    dialog.dismiss();
-                    Navigation.findNavController(getView()).navigateUp();
                 }
-            });
-
-            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
-        }
-        else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of the new trip:");
-            builder.setMessage("Name of the trip: " + binding.autoCompleteTextView.getText().toString() + "\n" +
-                    "Transportation: " + binding.editTransportation.getText().toString() + "\n" +
-                    "Risk assessment: " + binding.riskSelected.getText().toString() + "\n" +
-                    "Date of the trip: " + binding.editDate.getText().toString() + "\n" +
-                    "Participant: "  + binding.editParticipant.getText().toString() + "\n" +
-                    "Destination: " + binding.editDestination.getText().toString() + "\n" +
-                    "Description: " + binding.editDescription.getText().toString() + "\n" );
-//            builder.show();
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                else{
                     dao.insert(trip);
-                    dialog.dismiss();
-                    Navigation.findNavController(getView()).navigateUp();
                 }
-            });
+                dialog.dismiss();
+                Navigation.findNavController(getView()).navigateUp();
+            }
+        });
 
-            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
-        }
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
         return true;
     }
 
-    //Handling Radio Button Clicked
-//    public void onRadioButtonClicked(View view) {
-//        // Is the button now checked?
-//        boolean checked = ((RadioButton) view).isChecked();
-//        // Check which radio button was clicked
-//        switch(view.getId()) {
-//            case R.id.radio_yes:
-//                if (checked)
-//                    binding.riskSelected.setText("Risk assessment required");
-//                    break;
-//            case R.id.radio_no:
-//                if (checked)
-//                    binding.riskSelected.setText("No risk assessment required");
-//                break;
-//        }
-//    }
 
     //Initiate the date picker
     private void initDatePicker() {

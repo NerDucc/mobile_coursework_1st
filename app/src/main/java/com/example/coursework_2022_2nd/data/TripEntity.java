@@ -19,8 +19,6 @@ public class TripEntity {
     private String description;
     private String risk;
     private String transportation;
-
-
     public TripEntity() {
         this(
                 Constants.New_Trip_ID,
@@ -80,8 +78,6 @@ public class TripEntity {
         this.destination = destination;
     }
 
-
-
     public void setName(String name) {
         this.name = name;
     }
@@ -98,8 +94,6 @@ public class TripEntity {
         this.transportation = transportation;
     }
 
-
-
     public int getParticipant() {
         return participant;
     }
@@ -111,8 +105,6 @@ public class TripEntity {
     public String getDestination() {
         return destination;
     }
-
-
 
     public String getName() {
         return name;
@@ -133,10 +125,6 @@ public class TripEntity {
     public String getDate() {
         return date;
     }
-
-
-
-
 
     public Map<String, Object> getMapWithoutId(){
         Map<String, Object> bMap = new HashMap<>();

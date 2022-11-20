@@ -3,15 +3,7 @@ package com.example.coursework_2022_2nd;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import android.app.SearchManager;
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,27 +18,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.example.coursework_2022_2nd.data.DBHelper;
-import com.example.coursework_2022_2nd.data.SampleDataProvider;
 import com.example.coursework_2022_2nd.data.TripDAO;
 import com.example.coursework_2022_2nd.data.TripEntity;
 import com.example.coursework_2022_2nd.databinding.FragmentMainBinding;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 public class MainFragment extends Fragment implements TripListAdapter.ListTripListener{
-
     private FragmentMainBinding binding;
     private TripListAdapter adapter;
     TripDAO dao;
@@ -55,7 +36,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         // Init the menu bar
         AppCompatActivity app = (AppCompatActivity)getActivity();
         ActionBar ab = app.getSupportActionBar();
@@ -69,12 +49,10 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
 
         //Init the DAO class to get the data
         dao = new TripDAO(getContext());
-
         dao.tripList.setValue(dao.getAll());
 
         TextView empty1 = binding.empty1;
         TextView empty2 = binding.empty2;
-
         //Creating the recycler view
         RecyclerView rv = binding.recyclerView;
         rv.setHasFixedSize(true);  //each row has equal size regardless of its content
@@ -102,7 +80,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                     }
                 }
         );
-
         //Set listener for the adding button
         binding.fabAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +93,6 @@ public class MainFragment extends Fragment implements TripListAdapter.ListTripLi
                 bundle.putString("description",Constants.Empty_String);
                 bundle.putString("risk",Constants.Empty_String);
                 bundle.putString("transportation", Constants.Empty_String);
-
                 Navigation.findNavController(getView()).navigate(R.id.editorFragment, bundle);
             }
         });

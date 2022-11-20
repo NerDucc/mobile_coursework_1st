@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ExpenseEditorFragment extends Fragment {
-
     private FragmentExpenseEditorBinding binding;
     private DatePickerDialog datePickerDialog;
     EditText editTextDate;
@@ -59,15 +58,12 @@ public class ExpenseEditorFragment extends Fragment {
     ExpenseDAO expenseDAO;
     Button btnLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
-    String locationReceived;
-
     @Override
     public void onResume() {
         super.onResume();
         String[] expenseName = getResources().getStringArray(R.array.ExpenseName);
         binding.autoCompleteTextViewExpense.setAdapter(new ArrayAdapter<>(requireContext(), R.layout.dropdown_tripname, expenseName));
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -82,32 +78,26 @@ public class ExpenseEditorFragment extends Fragment {
 
         binding = FragmentExpenseEditorBinding.inflate(inflater, container, false);
 
-
         String tripId = getArguments().getString("trip_id");
         Bundle bundleReceived = getArguments();
 
         btnLocation = binding.getLocationBtn;
         editLocation = binding.location;
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Ask for permission
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     //Permission granted
-
                     getLocation();
 //                    System.out.println("We are hereeeeee");
-
                 } else {
                     //Permission denied
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
             }
         });
-
         expenseDAO = new ExpenseDAO(getContext(), tripId);
         String expenseIdReceived = getArguments().getString("expenseID");
 
@@ -209,9 +199,7 @@ public class ExpenseEditorFragment extends Fragment {
 
     private boolean expenseSaveAndReturn() {
         Log.i(this.getClass().getName(), "Saved and return");
-
         ExpenseEntity expense = new ExpenseEntity();
-
         expense.setType(binding.autoCompleteTextViewExpense.getText().toString());
         expense.setDate(binding.editDateExpense.getText().toString());
         expense.setAmount(Integer.parseInt(binding.editAmount.getText().toString()));
@@ -219,60 +207,36 @@ public class ExpenseEditorFragment extends Fragment {
         expense.setT_ID(getArguments().getString("trip_id"));
         expense.setLocation(binding.location.getText().toString());
 
-        if (getArguments().getString("expenseID") != "0"){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of the updated expense of the trip:");
-            builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
-                    "Date: "+binding.editDateExpense.getText().toString() + "\n" +
-                    "Amount: " + binding.editAmount.getText().toString() + "\n" +
-                    "Location: " + binding.location.getText().toString() + "\n" +
-                    "Comment: " + binding.comment.getText().toString() + "\n");
-//            builder.show();
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Information of the updated expense of the trip:");
+        builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
+                "Date: "+binding.editDateExpense.getText().toString() + "\n" +
+                "Amount: " + binding.editAmount.getText().toString() + "\n" +
+                "Location: " + binding.location.getText().toString() + "\n" +
+                "Comment: " + binding.comment.getText().toString() + "\n");
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (getArguments().getString("expenseID") != "0") {
                     expense.setE_ID(getArguments().getString("expenseID"));
                     expenseDAO.update(expense);
                     dialog.dismiss();
                     Navigation.findNavController(getView()).navigateUp();
                 }
-            });
-            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
-        }
-        else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Information of the new expense of the trip:");
-            builder.setMessage("Type: "+binding.autoCompleteTextViewExpense.getText().toString() + "\n" +
-                    "Date: "+binding.editDateExpense.getText().toString() + "\n" +
-                    "Amount: " + binding.editAmount.getText().toString() + "\n" +
-                    "Location: " + binding.location.getText().toString() + "\n" +
-                    "Comment: " + binding.comment.getText().toString() + "\n");
-//            builder.show();
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                else{
                     expenseDAO.insert(expense);
                     dialog.dismiss();
                     Navigation.findNavController(getView()).navigateUp();
                 }
-            });
-            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
-
-        }
+            }
+        });
+        builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
         return true;
     }
     @Override
@@ -328,7 +292,5 @@ public class ExpenseEditorFragment extends Fragment {
     private void showDateDialog(EditText editTextDate) {
         datePickerDialog.show();
     }
-
-
-
 }
+

@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
-
     private static final String DATABASE_NAME  = "company";
     private static final String TABLE_NAME = "trips";
     private static final String DROP = "DROP TABLE IF EXISTS ";

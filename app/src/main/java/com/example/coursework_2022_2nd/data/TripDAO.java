@@ -12,19 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TripDAO {
-
     SQLiteDatabase db;
-
     public MutableLiveData<TripEntity> trip = new MutableLiveData<>();
-
     public  MutableLiveData<List<TripEntity>> tripList = new MutableLiveData<List<TripEntity>>();
 
     public TripDAO(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         db = dbHelper.getWritableDatabase();
     }
-
-
     @SuppressLint("Range")
     public List<TripEntity> get(String DATABASE_CREATE, String ... selectArgs){
         List<TripEntity> list = new ArrayList<>();
@@ -60,7 +55,6 @@ public class TripDAO {
 
     public long insert(TripEntity tripDB){
         ContentValues contentValues = new ContentValues();
-//        contentValues.put("trip_id", tripDB.getId());
         contentValues.put("name", tripDB.getName());
         contentValues.put("destination", tripDB.getDestination());
         contentValues.put("date_trip", tripDB.getDate().toString());
@@ -81,7 +75,6 @@ public class TripDAO {
         contentValues.put("description", tripDB.getDescription());
         contentValues.put("risk", tripDB.getRisk());
         contentValues.put("transportation", tripDB.getTransportation());
-
         return db.update( "trips",contentValues, "trip_id=?", new String[]{String.valueOf(tripDB.getId())});
     }
 

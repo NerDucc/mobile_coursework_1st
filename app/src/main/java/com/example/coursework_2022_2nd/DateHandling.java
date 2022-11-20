@@ -12,12 +12,10 @@ public class DateHandling {
         int day = cal.get(Calendar.DAY_OF_MONTH);
         return makeDateString(day, month, year);
     }
-
     //Convert the date to String
     public static String makeDateString(int dayOfMonth, int month, int year) {
         return getMonthFormat(month) + " " +  dayOfMonth + "," + year;
     }
-
     //Convert Month to String
     public static String getMonthFormat(int month) {
         if(month == 1)

@@ -87,7 +87,6 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                 }
 
         );
-
         //Set listener for the adding button
         binding.fabAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,55 +98,6 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
                 Navigation.findNavController(getView()).navigate(R.id.expenseEditorFragment, bundle);
             }
         });
-
-        binding.fabUploadExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dao.getAll().toString() == "[]")return;
-                try {
-
-                    JSONArray array = new JSONArray();
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-                    for(ExpenseEntity e : dao.getAll()){
-                        array.put(e.toMap());
-                    }
-                    map.put("userId", "GCH190154");
-                    map.put("detailList", array);
-                    JSONObject jsonObject = new JSONObject(map);
-                    String jsonString = jsonObject.toString();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("json", jsonString);
-                    String showDialog = "";
-                    String fool = "";
-                    for(ExpenseEntity e : dao.getAll()){
-                        fool = "Name: " + e.getType() + "\n" +  "Date: " + e.getDate() + "\n" +"Location: " + e.getLocation() + "\n" +"Amount: " + e.getAmount() + "\n" + "\n";
-                        showDialog += fool;
-                        fool = "";
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Information:");
-                    builder.setMessage(showDialog);
-
-                    builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Navigation.findNavController(getView()).navigate(R.id.jsonWeb, bundle);
-                        }
-                    });
-                    builder.show();
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-
         return binding.getRoot();
 
     }
@@ -178,7 +128,55 @@ public class ExpenseFragment extends Fragment implements ExpenseListAdapter.List
         switch (item.getItemId()){
             case R.id.action_home:
                 return backHome();
+            case R.id.action_upload:
+                return upload();
             default: return super.onOptionsItemSelected(item);}
+    }
+
+    private boolean upload() {
+        if(dao.getAll().toString() == "[]")return false;
+        try {
+            JSONArray array = new JSONArray();
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            for(ExpenseEntity e : dao.getAll()){
+                array.put(e.toMap());
+            }
+            map.put("userId", "GCH190154");
+            map.put("detailList", array);
+            JSONObject jsonObject = new JSONObject(map);
+            String jsonString = jsonObject.toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("json", jsonString);
+            String showDialog = "";
+            String fool = "";
+            for(ExpenseEntity e : dao.getAll()){
+                fool = "Name: " + e.getType() + "\n" +  "Date: " + e.getDate() + "\n" +"Location: "
+                        + e.getLocation() + "\n" +"Amount: " + e.getAmount() + "\n" + "\n";
+                showDialog += fool;
+                fool = "";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Information:");
+            builder.setMessage(showDialog);
+
+            builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Navigation.findNavController(getView()).navigate(R.id.jsonWeb, bundle);
+                }
+            });
+            builder.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     private boolean backHome() {
