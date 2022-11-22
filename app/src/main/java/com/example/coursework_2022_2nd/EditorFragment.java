@@ -179,7 +179,6 @@ public class EditorFragment extends Fragment {
         EditText destination = binding.editDestination;
         EditText risk= binding.riskSelected;
         EditText participant = binding.editParticipant;
-
         boolean isValidated = true;
 
         if (name.getText().toString().equals(Constants.Empty_String)){
@@ -196,7 +195,6 @@ public class EditorFragment extends Fragment {
             participant.setText("1");
             isValidated = false;
         }
-
         if (risk.getText().toString().equals(Constants.Empty_String)){
             risk.setError("Please fill in the risk assessment or we will assume that you do not need any risk assessment");
             binding.riskSelected.setText("No risk assessment required");
@@ -315,3 +313,4 @@ public class EditorFragment extends Fragment {
     }
 
 }
+

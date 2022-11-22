@@ -5,10 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
-import java.util.Date;
-
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME  = "company";
     private static final String TABLE_NAME = "trips";

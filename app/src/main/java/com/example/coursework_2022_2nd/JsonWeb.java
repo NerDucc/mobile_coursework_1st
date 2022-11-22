@@ -27,8 +27,8 @@ import java.net.URLEncoder;
 public class JsonWeb extends Fragment {
     FragmentJsonWebBinding binding;
     WebView webView;
+//    String serviceLink = "https://cwservice1786.herokuapp.com";
     String serviceLink = "https://cwservice1786.herokuapp.com/sendPayLoad";
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -38,7 +38,6 @@ public class ExpenseDAO {
             expenseDB.setLocation(cursor.getString(cursor.getColumnIndex("expense_location")));
             list.add(expenseDB);
         }
-        System.out.println(list);
         return list;
     }
     public List<ExpenseEntity> getAll(){

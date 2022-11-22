@@ -47,9 +47,7 @@ public class TripDAO {
 
     public TripEntity getByID(String id){
         String dbGetOne = "SELECT * FROM trips WHERE trip_id = ?";
-
         List<TripEntity> list = get(dbGetOne, id);
-
         return list.get(0);
     }
 

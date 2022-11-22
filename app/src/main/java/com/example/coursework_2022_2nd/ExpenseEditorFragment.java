@@ -89,11 +89,8 @@ public class ExpenseEditorFragment extends Fragment {
             public void onClick(View v) {
                 //Ask for permission
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    //Permission granted
                     getLocation();
-//                    System.out.println("We are hereeeeee");
                 } else {
-                    //Permission denied
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
             }
@@ -141,16 +138,17 @@ public class ExpenseEditorFragment extends Fragment {
                             //Initialize address list
                             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                             List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            System.out.println(addressList.get(0).getAddressLine(0) + "," + addressList.get(0).getLocality());
+                            System.out.println(addressList.get(0).getAddressLine(0) + ","  + addressList.get(0).getLocality());
                             editLocation.setText(addressList.get(0).getAddressLine(0));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
+                    else{
+                        editLocation.setText("We can not get current location");
+                    }
                 }
             });
-
-
     }
 
 
